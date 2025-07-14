@@ -11,7 +11,7 @@ services:
       - .env
     depends_on:
       - postgres
-      # - redis
+      - redis
     ports:
       - '3000:3000'
     networks:
@@ -35,14 +35,14 @@ services:
     networks:
       - careersavvy_network
 
-  # redis:
-  #   image: redis/redis-stack:latest
-  #   container_name: careersavvy_redis
-  #   ports:
-  #     - '6379:6379'
-  #     - '8001:8001' # Redis Stack UI
-  #   networks:
-  #     - careersavvy_network
+  redis:
+    image: redis/redis-stack:latest
+    container_name: careersavvy_redis
+    ports:
+      - '6379:6379'
+      - '8001:8001' # Redis Stack UI
+    networks:
+      - careersavvy_network
 
 volumes:
   postgres_data:
