@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { BaseExceptionFilter } from './exception/BaseExceptionFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS (optional, but recommended for frontend APIs)
   app.enableCors();
+
+  app.useGlobalFilters(new BaseExceptionFilter());
 
   // Use global validation pipe
   app.useGlobalPipes(

@@ -63,9 +63,11 @@ export class AuthService {
   // Register a new user
   async register(dto: RegisterDto) {
     const user = await this.userService.createUser(dto);
-    if (!user.id) throw new Error('iughiu');
+    if (!user.id)
+      throw new InternalServerErrorException('User creation failed');
 
-    await this.redisService.set(`user:${user.id}`, user);
+    const ttl = this.parseExpiryToSeconds(this.jwtConfig.expires);
+    await this.redisService.set(user.id, user, { prefix: 'user', ttl });
 
     return this.authResponse(user);
   }
@@ -73,6 +75,12 @@ export class AuthService {
   // Authenticate and log in user
   async login(dto: LoginDto) {
     const user = await this.validateUser(dto.email, dto.password);
+
+    if (!user.id) throw new InternalServerErrorException('User not found');
+
+    const ttl = this.parseExpiryToSeconds(this.jwtConfig.expires);
+    await this.redisService.set(user.id, user, { prefix: 'user', ttl });
+
     return this.authResponse(user);
   }
 
@@ -113,5 +121,24 @@ export class AuthService {
         ? this.jwtConfig.refreshExpires
         : this.jwtConfig.expires,
     });
+  }
+
+  private parseExpiryToSeconds(expiry: string): number {
+    // Basic parse to seconds, supporting formats like '3600', '1h', '15m', '30s'
+    const num = parseInt(expiry, 10);
+    if (!isNaN(num) && expiry.match(/^\d+$/)) {
+      return num; // pure number string (seconds)
+    }
+    if (expiry.endsWith('s')) {
+      return parseInt(expiry, 10);
+    }
+    if (expiry.endsWith('m')) {
+      return parseInt(expiry, 10) * 60;
+    }
+    if (expiry.endsWith('h')) {
+      return parseInt(expiry, 10) * 3600;
+    }
+    // fallback default
+    return 3600; // 1 hour
   }
 }
