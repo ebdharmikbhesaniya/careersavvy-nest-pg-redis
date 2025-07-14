@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: careersavvy_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      # - redis
+    ports:
+      - '3000:3000'
+    networks:
+      - careersavvy_network
+    volumes:
+      - .:/app
+      - /app/node_modules # avoid overwriting node_modules inside container
+
+  postgres:
+    image: postgres:16
+    container_name: careersavvy_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: careersavvy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - careersavvy_network
+
+  # redis:
+  #   image: redis/redis-stack:latest
+  #   container_name: careersavvy_redis
+  #   ports:
+  #     - '6379:6379'
+  #     - '8001:8001' # Redis Stack UI
+  #   networks:
+  #     - careersavvy_network
+
+volumes:
+  postgres_data:
+
+networks:
+  careersavvy_network:
+    driver: bridge
