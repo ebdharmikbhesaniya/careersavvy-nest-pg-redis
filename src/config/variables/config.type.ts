@@ -3,10 +3,10 @@ export type AllConfigType = {
   jwt: JwtConfig;
   pgDatabase: PgDatabaseConfig;
   redisDatabase: RedisDatabaseConfig;
+  file: FileConfig;
   // apple: AppleConfig;
   // auth: AuthConfig;
   // facebook: FacebookConfig;
-  // file: FileConfig;
   // google: GoogleConfig;
   // mail: MailConfig;
   // twitter: TwitterConfig;
@@ -14,12 +14,13 @@ export type AllConfigType = {
 
 export type AppConfig = {
   nodeEnv: string;
+  port: number;
   name: string;
+  apiPrefix: string;
+
   workingDirectory: string;
   frontendDomain?: string;
   backendDomain: string;
-  port: number;
-  apiPrefix: string;
   fallbackLanguage: string;
   headerLanguage: string;
 };
@@ -54,6 +55,16 @@ export type JwtConfig = {
   expires?: string;
   refreshSecret?: string;
   refreshExpires?: string;
+};
+
+export type FileConfig = {
+  driver: string;
+  accessKeyId?: string;
+  secretAccessKey?: string;
+  awsDefaultS3Bucket?: string;
+  awsDefaultS3Url?: string;
+  awsS3Region?: string;
+  maxFileSize: number;
 };
 
 // export type AppleConfig = {
