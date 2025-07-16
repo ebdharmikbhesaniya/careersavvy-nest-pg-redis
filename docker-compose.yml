@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     env_file:
-      - .env
+      - docker.env
     depends_on:
       - postgres
       - redis
@@ -19,6 +19,11 @@ services:
     volumes:
       - .:/app
       - /app/node_modules # avoid overwriting node_modules inside container
+    # develop:
+    #   watch:
+    #     - path: .
+    #       target: /app
+    #       action: sync
 
   postgres:
     image: postgres:16
