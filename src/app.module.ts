@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { AuthModule } from './app/auth/auth.module';
+import { ResumeModule } from './app/resume/resume.module';
 import { UserModule } from './app/user/user.module';
 import { JwtConfigModule } from './config/jwt-config/jwt-config.module';
 import appConfig from './config/variables/app.config';
@@ -15,7 +16,6 @@ import { RedisModule } from './db/redis/redis.module';
 import { ApiModule } from './exception/api.module';
 import { FilesModule } from './files/files.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
-import { ResumeModule } from './app/resume/resume.module';
 
 @Module({
   imports: [
