@@ -12,6 +12,7 @@ import { TypeOrmConfigService } from './db/pg/typeormConfig.service';
 import { RedisModule } from './db/redis/redis.module';
 import { ApiModule } from './exception/api.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
+import { ResumeModule } from './app/resume/resume.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthMiddleware } from './middleware/auth.middleware';
     UserModule,
     AuthModule,
     ApiModule,
+    ResumeModule,
   ],
 })
 export class AppModule implements NestModule {
