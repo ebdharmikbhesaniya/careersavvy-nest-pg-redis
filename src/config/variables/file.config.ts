@@ -10,7 +10,7 @@ enum FileDriver {
 
 class EnvironmentVariablesValidator {
   @IsEnum(FileDriver)
-  FILE_DRIVER: FileDriver;
+  FILE_DRIVER: FileDriver = FileDriver.LOCAL;
 
   @ValidateIf(
     (envValues: EnvironmentVariablesValidator) =>
