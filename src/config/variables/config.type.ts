@@ -4,6 +4,7 @@ export type AllConfigType = {
   pgDatabase: PgDatabaseConfig;
   redisDatabase: RedisDatabaseConfig;
   file: FileConfig;
+  provider: ProviderConfig;
   // apple: AppleConfig;
   // auth: AuthConfig;
   // facebook: FacebookConfig;
@@ -65,6 +66,12 @@ export type FileConfig = {
   awsDefaultS3Url?: string;
   awsS3Region?: string;
   maxFileSize: number;
+};
+
+export type ProviderConfig = {
+  theirstackUrl?: string;
+  theirstackToken?: string;
+  theirstackPrefix?: string;
 };
 
 // export type AppleConfig = {

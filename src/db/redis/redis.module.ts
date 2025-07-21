@@ -1,6 +1,7 @@
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
+import { AllConfigType } from 'src/config/variables/config.type';
 import { REDIS_CLIENT } from 'src/global/constants/redis';
 import { RedisService } from './redis.service';
 
@@ -13,10 +14,10 @@ export class RedisModule {
       providers: [
         {
           provide: REDIS_CLIENT,
-          useFactory: (configService: ConfigService) => {
+          useFactory: (configService: ConfigService<AllConfigType>) => {
             return new Redis({
-              host: configService.get('redisDatabase.host'),
-              port: configService.get('redisDatabase.port'),
+              host: configService.get('redisDatabase.host', { infer: true }),
+              port: configService.get('redisDatabase.port', { infer: true }),
             });
           },
           inject: [ConfigService],
